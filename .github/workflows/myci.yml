@@ -12,10 +12,7 @@ on:
 jobs:
   build-java:
 
-    runs-on: ${{matrix.os}} #ubuntu-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
@@ -30,6 +27,14 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build
+
+    - name: Build and Publish Docker Images
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: richardajayi1/demojava-app  # Docker-id/repo-name
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
 
 
